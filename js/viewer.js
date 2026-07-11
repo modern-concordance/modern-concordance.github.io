@@ -2,6 +2,7 @@
  * Viewer module - Uses content-visibility: auto for virtual scrolling
  * All page wrappers are created on init, images load immediately.
  * Supports zoom via --zoom-width CSS variable.
+ * Supports external image host with fallback to local book/ directory.
  */
 export default (function () {
   let currentPage = 1;
@@ -11,13 +12,62 @@ export default (function () {
   const viewer = document.getElementById('viewer');
   const imageWrappers = new Map();
 
-  function init(total) {
+  // Image URL base – set via health check on init
+  const LOCAL_BASE = 'book/';
+  const REMOTE_BASE = 'https://modern-concordance.kithlo.com/book/';
+  const SESSION_KEY = 'mc_image_base';
+  let imageBaseUrl = LOCAL_BASE;
+
+  /**
+   * Check if the remote host is reachable by fetching alive.txt.
+   * Result is cached in sessionStorage for the lifetime of the browsing session.
+   */
+  async function detectImageBase() {
+    // Check sessionStorage first
+    try {
+      const cached = sessionStorage.getItem(SESSION_KEY);
+      if (cached === REMOTE_BASE || cached === LOCAL_BASE) {
+        imageBaseUrl = cached;
+        console.log('Image base (cached):', imageBaseUrl);
+        return;
+      }
+    } catch (e) { /* sessionStorage unavailable */ }
+
+    // Perform health check against remote host
+    try {
+      const resp = await fetch('https://modern-concordance.kithlo.com/alive.txt', {
+        method: 'GET',
+        cache: 'no-cache',
+        signal: AbortSignal.timeout(5000)
+      });
+      if (resp.ok) {
+        imageBaseUrl = REMOTE_BASE;
+        console.log('Image base: remote (https://modern-concordance.kithlo.com/book/)');
+      } else {
+        imageBaseUrl = LOCAL_BASE;
+        console.log('Image base: local (book/) – remote returned', resp.status);
+      }
+    } catch (e) {
+      imageBaseUrl = LOCAL_BASE;
+      console.log('Image base: local (book/) – remote check failed:', e.message);
+    }
+
+    // Cache result
+    try {
+      sessionStorage.setItem(SESSION_KEY, imageBaseUrl);
+    } catch (e) { /* sessionStorage unavailable */ }
+  }
+
+  async function init(total) {
     totalPages = total;
 
     const savedZoom = parseFloat(localStorage.getItem('zoomLevel'));
     if (savedZoom && savedZoom >= 0.50 && savedZoom <= 2.0) {
       zoomLevel = savedZoom;
     }
+
+    // Detect best image source before creating page wrappers
+    await detectImageBase();
 
     for (let p = 1; p <= totalPages; p++) {
       createPageWrapper(p);
@@ -34,6 +84,10 @@ export default (function () {
     }, { passive: false });
   }
 
+  function buildImageSrc(pageNum, base) {
+    return base + 'page_' + pageNum + '.jpg';
+  }
+
   function createPageWrapper(pageNum) {
     const wrapper = document.createElement('div');
     wrapper.className = 'page-image-wrapper';
@@ -47,12 +101,22 @@ export default (function () {
     const img = document.createElement('img');
     img.alt = 'Page ' + pageNum;
     img.loading = 'lazy';
-    img.src = 'book/page_' + pageNum + '.jpg';
+
+    // Start with the detected base; on error, try the other base once
+    img.src = buildImageSrc(pageNum, imageBaseUrl);
     img.onload = function () {
       img.classList.add('loaded');
       placeholder.remove();
     };
     img.onerror = function () {
+      // If we were using the remote and it failed, try local fallback
+      if (imageBaseUrl === REMOTE_BASE && img.src.indexOf(REMOTE_BASE) === 0) {
+        const fallbackSrc = buildImageSrc(pageNum, LOCAL_BASE);
+        if (img.src !== fallbackSrc) {
+          img.src = fallbackSrc;
+          return;
+        }
+      }
       placeholder.textContent = 'Page ' + pageNum + ' (failed to load)';
     };
     wrapper.appendChild(img);
