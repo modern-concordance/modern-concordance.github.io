@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Concordance</title>
+</head>
+<body>
+  <!-- Sections sidebar (left) -->
+  <aside id="sections-panel" class="sections-panel">
+    <div class="sections-header">
+      <h2>Sections</h2>
+      <button id="sections-close" class="close-btn" aria-label="Close sections">&times;</button>
+    </div>
+    <nav id="sections-list" class="sections-list">
+      <!-- Populated by JS -->
+    </nav>
+  </aside>
+
+  <!-- Main content area -->
+  <main id="main-view" class="main-view">
+    <!-- Search bar (top on mobile, right panel on desktop) -->
+    <div id="search-container" class="search-container">
+      <div class="search-input-wrapper">
+        <button id="search-close" class="search-close-btn" aria-label="Search">⌕</button>
+        <input type="text" id="search-input" class="search-input" placeholder="Search entries..." autocomplete="off">
+      </div>
+      <div id="search-results" class="search-results">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Image viewer -->
+    <div id="viewer" class="viewer">
+      <div id="image-container" class="image-container">
+        <!-- Images loaded dynamically -->
+      </div>
+    </div>
+
+    <!-- Pagination bar -->
+    <div id="pagination" class="pagination">
+      <button id="sections-toggle" class="sections-toggle-btn" aria-label="Toggle sections">☰</button>
+      <button id="prev-page" class="page-btn" aria-label="Previous page">◀</button>
+      <div class="page-input-wrapper">
+        <input type="number" id="page-input" class="page-input" min="1" max="800" value="1">
+        <span class="page-total">/ 800</span>
+      </div>
+      <button id="next-page" class="page-btn" aria-label="Next page">▶</button>
+      <div class="zoom-controls">
+        <button id="zoom-out" class="zoom-btn" aria-label="Zoom out">−</button>
+        <span id="zoom-label" class="zoom-label">100%</span>
+        <button id="zoom-in" class="zoom-btn" aria-label="Zoom in">+</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Desktop search panel (right side) -->
+  <aside id="search-panel" class="search-panel">
+    <div class="search-panel-resize-handle"></div>
+    <div id="search-panel-results" class="search-panel-results">
+      <!-- Populated by JS on desktop -->
+    </div>
+  </aside>
+
+</body>
+</html>
