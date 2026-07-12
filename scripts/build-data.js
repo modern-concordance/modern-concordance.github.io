@@ -30,7 +30,6 @@ for (const entry of rawEntries) {
     const refs = (entry.references || []).map(r => ({
       section: r.section,
       subsections: r.subsections || [],
-      priority: r.priority || 'normal'
     }));
 
     // Deduplicate by section name, merging subsections
@@ -39,10 +38,6 @@ for (const entry of rawEntries) {
       if (sectionMap.has(ref.section)) {
         const existing = sectionMap.get(ref.section);
         existing.subsections = [...new Set([...existing.subsections, ...ref.subsections])];
-        // Keep 'normal' priority if any reference is normal
-        if (ref.priority === 'normal') {
-          existing.priority = 'normal';
-        }
       } else {
         sectionMap.set(ref.section, { ...ref });
       }
