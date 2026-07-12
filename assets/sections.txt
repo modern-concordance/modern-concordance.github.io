@@ -1,3 +1,4 @@
+Cover	1
 Contents	5
 Introduction	7
 	The Concordance	7
@@ -67,16 +68,16 @@ Concordance Of Themes & Words	16
 	Cover - Veil	113
 	Crucify - Hang	113
 	Curse - Abuse - Slander	114
-	Custom - Practice	114
+	Custom - Practice	116
 	Cut - Division	117
 	Cyrene - Libya	119
-	Damascus	119
+	Damascus	121
 	David	121
 	Deaf - Dumb - Blind	121
 	Decapolis	122
 	Deceive - Trick - Pretence	122
-	Defile - Filth	123
-	Desert	125
+	Defile - Filth	125
+	Desert	126
 	Desire - Longing	127
 	Despise - Disregard	128
 	Destroy	129
@@ -85,14 +86,14 @@ Concordance Of Themes & Words	16
 	Dig - Pierce - Hole	139
 	Dishonour - Shame	139
 	Disperse - Scatter	140
-	Distance - Away - From	140
-	Do - Make - Behave	141
+	Distance - Away - From	141
+	Do - Make - Behave	142
 	Down - Below - Under	151
 	Drag - Draw	151
 	Drive - Send Out - Push	152
 	Dry - Wither	153
 	Earth - Land - Country	155
-	Easier - Difficult	155
+	Easier - Difficult	158
 	East - West	158
 	Eat - Food - Drink	159
 	Egypt	167
@@ -150,7 +151,7 @@ Concordance Of Themes & Words	16
 	Hear - Listen - Learn	282
 	Heart	290
 	Heaven	291
-	Hebrew	291
+	Hebrew	294
 	Help - Support	294
 	Holy	295
 	Honour - Respect	297
@@ -183,7 +184,7 @@ Concordance Of Themes & Words	16
 	Lean - Bend - Bow	351
 	Leave	351
 	Little	357
-	Long - Broad - Deep	357
+	Long - Broad - Deep	359
 	Love	359
 	Luxury - Wantonness	363
 	Magic	365
@@ -206,12 +207,12 @@ Concordance Of Themes & Words	16
 	Mountain - Hill	398
 	Mourn - Lament	399
 	Mouth - Tongue	401
-	Must - Ought To	401
-	Name - Call	403
+	Must - Ought To	403
+	Name - Call	406
 	Near - Approach - Come To	411
 	Need	414
 	New - Old	415
-	Night - Darkness	415
+	Night - Darkness	417
 	Noah - Enoch	419
 	Not Any - No	419
 	Not Yet - Never	422
@@ -252,16 +253,16 @@ Concordance Of Themes & Words	16
 	Rejoice - Glad - Happy	494
 	Remember - Forget	497
 	Repent	498
-	Rest - Relieve - Refresh	498
+	Rest - Relieve - Refresh	499
 	Right - Left	500
 	Righteous - Justify - Virtue	500
 	Rise - Raise - High	502
 	River - Flow - Fountain	508
-	Rod - Staff - Club	508
+	Rod - Staff - Club	510
 	Rome - Roman - Latin	510
 	Rope - Tie - Chain	511
 	Round - Roll	512
-	Rule - Authority - Leader	512
+	Rule - Authority - Leader	513
 	Run - Quickly	517
 	Rush - Spring - Leap	518
 	Sacrifice - Altar	520
@@ -274,7 +275,7 @@ Concordance Of Themes & Words	16
 	Seal	554
 	Secret - Mystery	555
 	See	556
-	Seek - Pursue	556
+	Seek - Pursue	564
 	Send	567
 	Shadow	570
 	Shake - Stir Up - Provoke	570
@@ -298,13 +299,13 @@ Concordance Of Themes & Words	16
 	Spit - Foam - Vomit	603
 	Stand	604
 	Star - Sun - Moon	606
-	Stay - Live	606
+	Stay - Live	607
 	Stephen - Philip	613
 	Steward - Guardian	613
 	Stone - Jewel	614
 	Straight - Crooked	615
 	Street - Path - Way	616
-	Stretch Out	616
+	Stretch Out	618
 	Stumble - Fall	618
 	Suffer - Anguish	621
 	Sweet - Gentle - Kindly	623
@@ -312,31 +313,31 @@ Concordance Of Themes & Words	16
 	Table	625
 	Take - Bring - Lead	625
 	Tax	632
-	Teaching	632
+	Teaching	633
 	Tell - Preach - Proclaim	635
 	Temple - Sanctuary	639
 	Test	640
 	Think - Consider	642
 	Through	645
 	Throw - Drop	646
-	Time - Day - Hour	646
+	Time - Day - Hour	647
 	Touch	654
 	Tree - Wood	654
 	Tribe	656
-	True - Amen	656
+	True - Amen	657
 	Turn - Return	660
 	Tyre - Sidon	662
 	Vessel - Basket - Bag	663
-	Victory - Conquer	663
+	Victory - Conquer	664
 	Voice - Sound	665
 	War - Army - Weapons	669
-	Water - Baptise - Wash	669
+	Water - Baptise - Wash	671
 	Weaken - Sickness	673
 	Where From	676
 	Whole - All - Each	676
-	Will - Want	676
+	Will - Want	686
 	Wind - Cloud - Rain	690
-	Wipe - Wipe Out	690
+	Wipe - Wipe Out	692
 	Wise - Sober	692
 	With	694
 	Witness - Testify	696
@@ -346,36 +347,36 @@ Concordance Of Themes & Words	16
 	Year - Month - Week	707
 	Yeast - Leaven - Unleavened	708
 	Yes	709
-	Zeal - Envy - Greed	709
+	Zeal - Envy - Greed	710
 English Index	711
 	A	712
 	B	715
-	C	715
+	C	718
 	D	722
 	E	726
-	F	726
-	G	728
+	F	728
+	G	731
 	H	733
 	I	735
-	J	735
+	J	737
 	K	737
 	L	738
 	M	740
 	N	743
-	O	743
+	O	744
 	P	744
 	Q	749
 	R	749
-	S	749
+	S	752
 	T	758
-	U	758
-	V	761
+	U	761
+	V	762
 	W	763
-	Y	763
+	Y	765
 	Z	766
 Greek Index	767
 	α	768
-	β	768
+	β	772
 	γ	773
 	δ	773
 	ε	775
@@ -383,18 +384,18 @@ Greek Index	767
 	η	779
 	θ	780
 	ι	780
-	κ	780
+	κ	781
 	λ	783
 	μ	784
-	ν	784
+	ν	785
 	ξ	785
 	ο	785
 	π	787
-	ρ	787
+	ρ	790
 	σ	790
-	τ	790
+	τ	793
 	υ	794
-	φ	794
+	φ	795
 	χ	795
 	ψ	796
 	ω	796
