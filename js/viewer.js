@@ -23,6 +23,13 @@ export default (function () {
    * Result is cached in sessionStorage for the lifetime of the browsing session.
    */
   async function detectImageBase() {
+    // In dev mode, always use local images — skip remote health check
+    if (import.meta.env.DEV) {
+      imageBaseUrl = LOCAL_BASE;
+      console.log('Image base: local (book/) – dev mode');
+      return;
+    }
+
     // Check sessionStorage first
     try {
       const cached = sessionStorage.getItem(SESSION_KEY);
