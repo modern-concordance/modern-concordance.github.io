@@ -194,17 +194,17 @@ export default (function () {
       score: r.score
     }));
 
-    // Three-tier ranking for whole-word matches:
-    // Tier 1 (score 0): keyword matches the FIRST token (entry starts with it)
-    // Tier 2 (score 0.01): keyword matches any other whole-word token
-    // Tier 3 (score 0.02+): fuzzy Fuse match only
+    // Three-tier ranking for whole-word token matches:
+    // Tier 1 (score -2): keyword matches the FIRST token (entry starts with it)
+    // Tier 2 (score -1): keyword matches any other whole-word token
+    // Tier 3 (score 0+): fuzzy Fuse match or alias substring only
     // Within each tier, ties broken by YAML index (entry.index)
     for (const result of results) {
       const tokens = result.entry.name.toLowerCase().split(/[\s,\-\(\)]+/).filter(Boolean);
       for (const kw of keywords) {
         const tokenIdx = tokens.indexOf(kw);
         if (tokenIdx !== -1) {
-          result.score = tokenIdx === 0 ? 0 : 0.01;
+          result.score = tokenIdx === 0 ? -2 : -1;
           break;
         }
       }
