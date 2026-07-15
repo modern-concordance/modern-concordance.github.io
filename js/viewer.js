@@ -143,7 +143,7 @@ export default (function () {
   }
 
   function applyZoom() {
-    const px = Math.round(zoomLevel * 450) + 'px';
+    const px = Math.round(zoomLevel * 600) + 'px';
     container.style.setProperty('--zoom-width', px);
     const pct = Math.round(zoomLevel * 100) + '%';
     document.getElementById('zoom-label').textContent = pct;
