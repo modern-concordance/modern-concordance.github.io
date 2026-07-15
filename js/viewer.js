@@ -8,6 +8,8 @@ export default (function () {
   let currentPage = 1;
   let totalPages = 800;
   let zoomLevel = 1.0;
+  const minZoomLevel = 0.3
+  const maxZoomLevel = 5.0
   const container = document.getElementById('image-container');
   const viewer = document.getElementById('viewer');
   const imageWrappers = new Map();
@@ -69,7 +71,7 @@ export default (function () {
     totalPages = total;
 
     const savedZoom = parseFloat(localStorage.getItem('zoomLevel'));
-    if (savedZoom && savedZoom >= 0.50 && savedZoom <= 2.0) {
+    if (savedZoom && savedZoom >= minZoomLevel && savedZoom <= maxZoomLevel) {
       zoomLevel = savedZoom;
     }
 
@@ -134,15 +136,16 @@ export default (function () {
   }
 
   function changeZoom(level) {
-    zoomLevel = Math.max(0.50, Math.min(2.0, level + zoomLevel));
+    zoomLevel = Math.max(minZoomLevel, Math.min(maxZoomLevel, level + zoomLevel));
     localStorage.setItem('zoomLevel', zoomLevel);
     applyZoom();
     return zoomLevel;
   }
 
   function applyZoom() {
+    const px = Math.round(zoomLevel * 450) + 'px';
+    container.style.setProperty('--zoom-width', px);
     const pct = Math.round(zoomLevel * 100) + '%';
-    container.style.setProperty('--zoom-width', pct);
     document.getElementById('zoom-label').textContent = pct;
   }
 
