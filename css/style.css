@@ -179,7 +179,8 @@ body {
   font-size: 1.4rem;
   cursor: pointer;
   color: #666;
-  padding: 0 4px;
+  width: 20px;
+  text-align: center;
   line-height: 1;
 }
 
@@ -445,6 +446,11 @@ body {
   font-size: 0.82rem;
   color: #1a73e8;
   transition: background 0.15s;
+  column-gap: 4px;
+}
+
+.search-result-section .name {
+  white-space: nowrap;
 }
 
 .search-result-section:hover {

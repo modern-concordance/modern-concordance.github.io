@@ -6,6 +6,7 @@ import Pagination from './pagination.js';
 import Fuse from 'fuse.js';
 
 export default (function () {
+  const minQueryLength = 1
   let fuse = null;
   let aliasToEntry = new Map();
   let allEntries = [];
@@ -45,7 +46,7 @@ export default (function () {
       threshold: 0.4,
       distance: 100,
       includeScore: true,
-      minMatchCharLength: 2,
+      minMatchCharLength: minQueryLength,
       ignoreLocation: true
     });
 
@@ -62,7 +63,7 @@ export default (function () {
     searchInput.addEventListener('input', function () {
       clearTimeout(debounceTimer);
       const query = this.value.trim();
-      if (query.length >= 2) {
+      if (query.length >= minQueryLength) {
         debounceTimer = setTimeout(() => doSearch(query), 50);
       } else {
         clearResults();
@@ -71,7 +72,7 @@ export default (function () {
 
     searchInput.addEventListener('focus', function () {
       const query = this.value.trim();
-      if (query.length >= 2) {
+      if (query.length >= minQueryLength) {
         showResults();
       }
     });
@@ -98,7 +99,7 @@ export default (function () {
     desktopSearchInput.addEventListener('input', function () {
       clearTimeout(debounceTimer);
       const query = this.value.trim();
-      if (query.length >= 2) {
+      if (query.length >= minQueryLength) {
         debounceTimer = setTimeout(() => doDesktopSearch(query), 50);
       } else {
         clearDesktopResults();
@@ -158,7 +159,7 @@ export default (function () {
   }
 
   function performSearch(query) {
-    const keywords = query.toLowerCase().split(/\s+/).filter(k => k.length >= 2);
+    const keywords = query.toLowerCase().split(/\s+/).filter(k => k.length >= minQueryLength);
     if (keywords.length === 0) return [];
 
     // Track best score and matched alias per entry across all keywords
@@ -258,6 +259,7 @@ export default (function () {
         const el = document.createElement('div');
         el.className = 'search-result-section';
         const nameSpan = document.createElement('span');
+        nameSpan.className = 'name';
         nameSpan.textContent = '→ ' + ref.section;
         el.appendChild(nameSpan);
         if (ref.subsections && ref.subsections.length > 0) {
@@ -267,7 +269,6 @@ export default (function () {
           el.appendChild(subs);
         }
         if (page) {
-          el.style.cursor = 'pointer';
           el.title = 'Go to page ' + page;
           el.addEventListener('click', () => {
             Pagination.navigateTo(page);
