@@ -424,6 +424,18 @@ body {
   margin-bottom: 4px;
 }
 
+.search-result-section-name {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.section-page-num {
+  color: #888;
+  font-size: 0.78rem;
+  margin-left: auto;
+}
+
 .search-result-name .alias-hint {
   font-weight: 400;
   font-size: 0.8rem;

@@ -11,6 +11,7 @@ export default (function () {
   let aliasToEntry = new Map();
   let allEntries = [];
   let sections = [];
+  let concordanceSections = [];
   let sectionPageMap = new Map();
 
   const searchInput = document.getElementById('search-input');
@@ -27,6 +28,22 @@ export default (function () {
   function init(concordanceData, sectionsData) {
     allEntries = concordanceData;
     sections = sectionsData.sections || [];
+
+    // Filter to only sections under "Concordance Of Themes & Words"
+    let inConcordance = false;
+    for (const section of sections) {
+      const titleLower = section.title.toLowerCase();
+      if (titleLower === 'concordance of themes & words') {
+        inConcordance = true;
+        continue;
+      }
+      if (titleLower === 'english index') {
+        break;
+      }
+      if (inConcordance && section.indent > 0) {
+        concordanceSections.push(section);
+      }
+    }
 
     for (const section of sections) {
       sectionPageMap.set(section.title.toLowerCase(), section.page);
@@ -175,7 +192,7 @@ export default (function () {
         }
       }
 
-      // Alias search per keyword
+    // Alias search per keyword
       for (const [alias, entry] of aliasToEntry) {
         if (alias.includes(kw)) {
           const existing = entryMap.get(entry.name);
@@ -188,11 +205,12 @@ export default (function () {
       }
     }
 
-    // Convert map to sorted array
+    // Convert entry map to sorted array
     const results = Array.from(entryMap.values()).map(r => ({
       entry: r.entry,
       matchedAlias: r.matchedAlias,
-      score: r.score
+      score: r.score,
+      type: 'entry'
     }));
 
     // Three-tier ranking for whole-word token matches:
@@ -211,11 +229,53 @@ export default (function () {
       }
     }
 
-    results.sort((a, b) => {
+    // Section title search per keyword (only Concordance sections)
+    const sectionMap = new Map(); // section title -> { section, matchedKeyword }
+    for (const kw of keywords) {
+      for (const section of concordanceSections) {
+        const titleLower = section.title.toLowerCase();
+        if (titleLower.includes(kw)) {
+          const existing = sectionMap.get(section.title);
+          if (!existing || kw.length > existing.matchedKeyword.length) {
+            sectionMap.set(section.title, { section, matchedKeyword: kw, score: 0.0 });
+          }
+        }
+      }
+    }
+
+    const sectionResults = Array.from(sectionMap.values()).map(r => ({
+      section: r.section,
+      matchedKeyword: r.matchedKeyword,
+      score: r.score,
+      type: 'section'
+    }));
+
+    // Apply whole-word token tiering to section results
+    for (const result of sectionResults) {
+      const tokens = result.section.title.toLowerCase().split(/[\s,\-\(\)]+/).filter(Boolean);
+      for (const kw of keywords) {
+        const tokenIdx = tokens.indexOf(kw);
+        if (tokenIdx !== -1) {
+          result.score = tokenIdx === 0 ? -2 : -1;
+          break;
+        }
+      }
+    }
+
+    // Merge section results with entry results, prioritizing sections
+    const allResults = [...sectionResults];
+    const sectionTitles = new Set(sectionResults.map(r => r.section.title.toLowerCase()));
+    for (const entryResult of results) {
+      if (!sectionTitles.has(entryResult.entry.name.toLowerCase())) {
+        allResults.push(entryResult);
+      }
+    }
+
+    allResults.sort((a, b) => {
       if (a.score !== b.score) return a.score - b.score;
-      return (a.entry.index || 0) - (b.entry.index || 0);
+      return (a.entry?.index || 0) - (b.entry?.index || 0);
     });
-    return results;
+    return allResults;
   }
 
   function renderResults(container, results, max) {
@@ -236,6 +296,34 @@ export default (function () {
   }
 
   function createResultItem(result) {
+    // Section-type result: navigate directly to page
+    if (result.type === 'section') {
+      const item = document.createElement('div');
+      item.className = 'search-result-item';
+
+      const nameDiv = document.createElement('div');
+      nameDiv.className = 'search-result-name search-result-section-name';
+      nameDiv.style.cursor = 'pointer';
+      nameDiv.title = 'Go to page ' + result.section.page;
+      nameDiv.addEventListener('click', () => {
+        Pagination.navigateTo(result.section.page);
+        if (isMobile) searchResults.classList.remove('visible');
+      });
+
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = result.section.title;
+      nameDiv.appendChild(nameSpan);
+
+      const pageSpan = document.createElement('span');
+      pageSpan.className = 'section-page-num';
+      pageSpan.textContent = result.section.page;
+      nameDiv.appendChild(pageSpan);
+
+      item.appendChild(nameDiv);
+
+      return item;
+    }
+
     const { entry, matchedAlias } = result;
     const item = document.createElement('div');
     item.className = 'search-result-item';
