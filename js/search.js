@@ -8,6 +8,7 @@ import Fuse from 'fuse.js';
 export default (function () {
   const minQueryLength = 1
   let fuse = null;
+  let sectionFuse = null;
   let aliasToEntry = new Map();
   let allEntries = [];
   let sections = [];
@@ -60,6 +61,16 @@ export default (function () {
     // Safe Fuse options - no ignoreLocation, reasonable distance
     fuse = new Fuse(allEntries, {
       keys: ['name'],
+      threshold: 0.4,
+      distance: 100,
+      includeScore: true,
+      minMatchCharLength: minQueryLength,
+      ignoreLocation: true
+    });
+
+    // Fuse instance for concordance sections
+    sectionFuse = new Fuse(concordanceSections, {
+      keys: ['title'],
       threshold: 0.4,
       distance: 100,
       includeScore: true,
@@ -229,23 +240,20 @@ export default (function () {
       }
     }
 
-    // Section title search per keyword (only Concordance sections)
-    const sectionMap = new Map(); // section title -> { section, matchedKeyword }
+    // Section title search per keyword using Fuse.js (only Concordance sections)
+    const sectionMap = new Map(); // section title -> { section, score }
     for (const kw of keywords) {
-      for (const section of concordanceSections) {
-        const titleLower = section.title.toLowerCase();
-        if (titleLower.includes(kw)) {
-          const existing = sectionMap.get(section.title);
-          if (!existing || kw.length > existing.matchedKeyword.length) {
-            sectionMap.set(section.title, { section, matchedKeyword: kw, score: 0.0 });
-          }
+      const sectionFuseResults = sectionFuse.search(kw, { limit: 50 });
+      for (const r of sectionFuseResults) {
+        const existing = sectionMap.get(r.item.title);
+        if (!existing || r.score < existing.score) {
+          sectionMap.set(r.item.title, { section: r.item, score: r.score });
         }
       }
     }
 
     const sectionResults = Array.from(sectionMap.values()).map(r => ({
       section: r.section,
-      matchedKeyword: r.matchedKeyword,
       score: r.score,
       type: 'section'
     }));
@@ -311,7 +319,7 @@ export default (function () {
       });
 
       const nameSpan = document.createElement('span');
-      nameSpan.textContent = result.section.title;
+      nameSpan.textContent = result.section.title.toUpperCase();
       nameDiv.appendChild(nameSpan);
 
       const pageSpan = document.createElement('span');
